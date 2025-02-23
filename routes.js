@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { db } from "./index.js";
 
 const router = Router();
-const jwtSecret = "varun";
+const jwtSecret = process.env.JWT_SECRET;
 
 const authenticateUser = async (req, res, next) => {
   try {
@@ -16,7 +16,9 @@ const authenticateUser = async (req, res, next) => {
     req.user = verified;
     next();
   } catch (err) {
-    res.status(401).json({ error: "Invalid Token" });
+    const message =
+      err.name === "TokenExpiredError" ? "Token expired" : "Invalid Token";
+    res.status(401).json({ error: message });
   }
 };
 
@@ -24,6 +26,10 @@ const errorCatch = (err, req, res, next) => {
   console.log(`Error at ${req.path}:`, err);
   res.status(500).json({ error: err.message });
 };
+
+router.get("/validateJWT", authenticateUser, async (req, res) => {
+  res.json({ message: "Valid JWT" });
+});
 
 router.post("/signup", async (req, res, next) => {
   try {

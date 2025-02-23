@@ -3,8 +3,11 @@ import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 import path from "path";
 import cors from "cors";
+import dotenv from "dotenv";
 
 import router from "./routes.js";
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
