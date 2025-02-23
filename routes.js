@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { db } from "./index.js";
 
 const router = Router();
-const jwtSecret = "varun";
+const jwtSecret = process.env.JWT_SECRETE;
 
 const authenticateUser = async (req, res, next) => {
   try {
